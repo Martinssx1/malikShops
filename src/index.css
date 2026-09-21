@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Colour tokens (space-separated RGB so Tailwind opacity modifiers work) */
+:root {
+  /* Light: soft sage-white, deep leaf-green accent */
+  --bg: 246 248 243;
+  --surface: 255 255 255;
+  --tint: 228 239 223;
+  --line: 214 226 208;
+  --ink: 20 35 26;
+  --muted: 92 110 98;
+  --brand: 31 122 77;
+  --brand-ink: 255 255 255;
+}
+
+.dark {
+  /* Dark: forest-black with a green undertone, soft mint accent */
+  --bg: 10 18 14;
+  --surface: 18 28 22;
+  --tint: 24 40 31;
+  --line: 36 53 43;
+  --ink: 232 241 234;
+  --muted: 147 168 155;
+  --brand: 95 208 138;
+  --brand-ink: 7 32 18;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-bg font-body text-ink antialiased transition-colors duration-300;
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--brand));
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: rgb(var(--brand) / 0.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
