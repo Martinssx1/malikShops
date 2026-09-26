@@ -14,7 +14,7 @@
  * `quantity`, and Paystack charges base amount × quantity every month, so
  * quantity = instalment ÷ 100. Until the codes are set, the popup simply
  * charges the first instalment as a one-off, which is handy for testing.
- */
+ 
 
 interface PaystackResponse {
   reference: string;
@@ -58,8 +58,8 @@ export const paystackReady = () => Boolean(PUBLIC_KEY && window.PaystackPop);
 interface PayArgs {
   email: string;
   /** Amount to charge today, in naira (full total, or the first instalment). */
-  amountNaira: number;
-  /** 0 = pay in full, otherwise number of monthly payments. */
+// amountNaira: number;
+/** 0 = pay in full, otherwise number of monthly payments. 
   months: number;
   instalmentNaira?: number;
   metadata?: Record<string, unknown>;
@@ -83,20 +83,21 @@ export function payWithPaystack({
   }
 
   const planCode = months ? PLAN_CODES[months] : undefined;
-
+  /*
   const handler = window.PaystackPop.setup({
     key: PUBLIC_KEY,
     email,
     amount: Math.round(amountNaira * 100),
-    currency: "NGN",
+    currency: 'NGN',
     ref: `MS-${Date.now()}`,
     ...(planCode && instalmentNaira
       ? { plan: planCode, quantity: Math.round(instalmentNaira / 100) }
       : {}),
-    metadata: { store: "malikshops", plan_months: months, ...metadata },
+    metadata: { store: 'malikshops', plan_months: months, ...metadata },
     callback: (response) => onSuccess(response.reference),
     onClose,
   });
 
   handler.openIframe();
-}
+  *
+}*/
