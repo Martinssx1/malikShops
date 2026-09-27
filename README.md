@@ -1,4 +1,4 @@
-`# malikshops
+`#MALIKSHOPS
 
 An e-commerce storefront with Paystack checkout and split-payment plans. Currently running in **Paystack test mode**, with a Node/Express backend that verifies payments via webhook rather than trusting the frontend.
 
