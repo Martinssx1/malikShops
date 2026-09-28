@@ -60,7 +60,7 @@ export function Checkout() {
       console.log("email", email);
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_FRONT_END_URL}/payment-paystack`,
+          `${import.meta.env["VITE_FRONT_END_URL"]}/payment-paystack`,
           {
             method: "POST",
             headers: {

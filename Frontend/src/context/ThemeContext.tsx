@@ -26,5 +26,3 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     </ThemeContext.Provider>
   );
 }
-
-/** Read theme state or flip it, from any component, without passing props down. */
