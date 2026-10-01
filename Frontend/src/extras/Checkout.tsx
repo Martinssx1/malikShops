@@ -30,6 +30,7 @@ export function Checkout() {
   if (!checkoutOpen) return null;
 
   const planAllowed = total >= MIN_PLAN_ORDER;
+
   const instalment = months ? installmentOf(total, months) : 0;
   const dueToday = months ? instalment : total;
 
@@ -57,7 +58,7 @@ export function Checkout() {
     setPaying(true);
 
     async function responseCode() {
-      console.log("email", email);
+      console.log("items", lines);
       try {
         const response = await fetch(
           `${import.meta.env["VITE_FRONT_END_URL"]}/payment-paystack`,
@@ -68,7 +69,11 @@ export function Checkout() {
             },
             body: JSON.stringify({
               email: email,
-              amount: 50000,
+              customer_name: name,
+              phone,
+              address,
+              items: lines,
+              plan_months: months,
             }),
           },
         );
@@ -81,19 +86,12 @@ export function Checkout() {
         const popup = new PaystackPop();
         popup.resumeTransaction(data.data.access_code, {
           onSuccess: (transaction) => {
-            console.log(transaction);
             setPaying(false);
             setReference(transaction.reference);
             clear();
           },
-          onLoad: (response) => {
-            console.log("onLoad: ", response);
-          },
-          onCancel: () => {
-            console.log("onCancel");
-          },
+
           onError: (error) => {
-            console.log("Error: ", error.message);
             setPaying(false);
             setError(
               error instanceof Error
@@ -103,41 +101,12 @@ export function Checkout() {
           },
         });
       } catch (error) {
-        console.error("Error initiating payment:", error);
+        console.log("Error initiating payment:", error);
       } finally {
         setPaying(false);
       }
     }
     responseCode();
-
-    /*  payWithPaystack({
-        email,
-        amountNaira: dueToday,
-        months,
-        instalmentNaira: months ? instalment : undefined,
-        metadata: {
-          customer_name: name,
-          phone,
-          address,
-          order_total: total,
-          items: lines.map((l) => `${l.qty} × ${l.product.name}`).join(", "),
-        },
-        onSuccess: (ref) => {
-          setPaying(false);
-          setReference(ref);
-          clear();
-        },
-        onClose: () => setPaying(false),
-      });
-    } catch (e) {
-      setPaying(false);
-      setError(
-        e instanceof Error ? e.message : "Payment could not start. Try again.",
-      );
-    } finally {
-      setPaying(false);
-    }
-      */
   };
 
   return (
